@@ -38,19 +38,66 @@ The application implements a load balancing strategy that:
 
 ### Load Balancer Architecture
 ```
-┌─────────────────┐     ┌─────────────────┐
-│                 │     │                 │
-│  Client Request │────▶│  Load Balancer  │
-│                 │     │                 │
-└─────────────────┘     └────────┬────────┘
-                                 │
-                                 ▼
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│                 │     │                 │     │                 │
-│  Server         │◀────┤  Server         │◀────┤  Server         │
-│  Instance 1     │     │  Instance 2     │     │  Instance 3     │
-│                 │     │                 │     │                 │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                                                                         │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐               │
+│  │             │     │             │     │             │               │
+│  │  Client 1   │     │  Client 2   │     │  Client N   │               │
+│  │             │     │             │     │             │               │
+│  └──────┬──────┘     └──────┬──────┘     └──────┬──────┘               │
+│         │                   │                   │                       │
+│         └───────────────────┴───────────────────┘                       │
+│                                 │                                       │
+│                                 ▼                                       │
+│  ┌─────────────────────────────────────────────────────────┐           │
+│  │                                                         │           │
+│  │                    Load Balancer                        │           │
+│  │                                                         │           │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │           │
+│  │  │             │  │             │  │             │     │           │
+│  │  │ Health      │  │ Request     │  │ Server      │     │           │
+│  │  │ Monitor     │  │ Distributor │  │ Selector    │     │           │
+│  │  │             │  │             │  │             │     │           │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘     │           │
+│  │                                                         │           │
+│  └───────────────────────────┬─────────────────────────────┘           │
+│                              │                                         │
+│                              ▼                                         │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐               │
+│  │             │     │             │     │             │               │
+│  │  Server     │◀────┤  Server     │◀────┤  Server     │               │
+│  │ Instance 1  │     │ Instance 2  │     │ Instance 3  │               │
+│  │             │     │             │     │             │               │
+│  │ ┌─────────┐ │     │ ┌─────────┐ │     │ ┌─────────┐ │               │
+│  │ │Health   │ │     │ │Health   │ │     │ │Health   │ │               │
+│  │ │Status:  │ │     │ │Status:  │ │     │ │Status:  │ │               │
+│  │ │Active   │ │     │ │Active   │ │     │ │Active   │ │               │
+│  │ └─────────┘ │     │ └─────────┘ │     │ └─────────┘ │               │
+│  └─────────────┘     └─────────────┘     └─────────────┘               │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Request Flow Example:
+1. Client 1 sends request for calculation (5 + 3)
+2. Load Balancer receives request
+3. Request Distributor analyzes current load
+4. Server Selector chooses Server Instance 1
+5. Server Instance 1 processes request and returns result
+6. Next request from Client 2 is routed to Server Instance 2
+7. Following request from Client N is routed to Server Instance 3
+8. Process continues in round-robin fashion
+
+Key Components:
+1. Clients: Multiple users/applications sending requests
+2. Load Balancer:
+   - Health Monitor: Checks server health status
+   - Request Distributor: Routes requests based on algorithm
+   - Server Selector: Chooses appropriate server instance
+3. Server Instances:
+   - Multiple identical server instances
+   - Each with health status monitoring
+   - Running calculator service
+   - Requests distributed in round-robin fashion
 ```
 
 ## Project Structure
@@ -127,7 +174,7 @@ curl "http://localhost:8080/function1?a=5&b=3"
 ```
 
 ## Screenshots
-![Calculator Application Screenshot](src/images/Screenshot%20from%202025-04-08%2016-51-55.png)
+![Calculator Application Screenshot](src/iymages/Screenshot%20from%202025-04-08%2016-51-55.png)
 
 ## Features
 - Basic arithmetic operations (addition, subtraction, multiplication, division)
