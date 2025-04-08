@@ -14,27 +14,27 @@ public class CalculatorController {
     @Autowired
     private LoadBalancer loadBalancer;
 
-    @GetMapping("/function1")
-    public double function1(@RequestParam double x, @RequestParam double y) {
+    @GetMapping("/add")
+    public double add(@RequestParam double x, @RequestParam double y) {
         CalculatorService service = loadBalancer.getNextService();
-        return service.function1(x, y);
+        return service.add(x, y);
     }
 
-    @GetMapping("/function2")
-    public double function2(@RequestParam double x, @RequestParam double y) {
+    @GetMapping("/sub")
+    public double sub(@RequestParam double x, @RequestParam double y) {
         CalculatorService service = loadBalancer.getNextService();
-        return service.function2(x, y);
+        return service.sub(x, y);
     }
 
-    @GetMapping("/function3")
-    public double function3(@RequestParam double x, @RequestParam double y) {
+    @GetMapping("/mul")
+    public double mul(@RequestParam double x, @RequestParam double y) {
         CalculatorService service = loadBalancer.getNextService();
-        return service.function3(x, y);
+        return service.mul(x, y);
     }
 
-    @GetMapping("/function4")
-    public double function4(@RequestParam double x, @RequestParam double y) {
+    @GetMapping("/div")
+    public double div(@RequestParam double x, @RequestParam double y) {
         CalculatorService service = loadBalancer.getNextService();
-        return service.function4(x, y);
+        return service.div(x, y);
     }
 }
