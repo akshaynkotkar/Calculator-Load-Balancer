@@ -174,7 +174,7 @@ curl "http://localhost:8080/function1?a=5&b=3"
 ```
 
 ## Screenshots
-![Calculator Application Screenshot](src/iymages/Screenshot%20from%202025-04-08%2016-51-55.png)
+![Calculator Application Screenshot](src/images/Screenshot%20from%202025-04-08%2016-51-55.png)
 
 ## Features
 - Basic arithmetic operations (addition, subtraction, multiplication, division)
