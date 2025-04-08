@@ -99,6 +99,8 @@ Key Components:
    - Running calculator service
    - Requests distributed in round-robin fashion
 ```
+## Diagram
+![Load Balancer Architecture Diagram](src/images/diagram.png)
 
 ## Project Structure
 - `src/main/java/loadBalancer/calculator/`: Main application code
